@@ -1,3 +1,51 @@
+import os
+import csv
+import requests
+
+# Get script's directory
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# File paths
+input_path = os.path.join(script_dir, "input.txt")
+output_path = os.path.join(script_dir, "eve_items_with_typeids.csv")
+
+# Function to get the typeID from the API
+def get_typeID(item_name):
+    url = f"https://www.fuzzwork.co.uk/api/typeid2.php?typename={item_name}"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Check if the request was successful
+        data = response.json()  # Parse the JSON response
+        if data:  # If the list is not empty
+            return data[0]["typeID"]
+        else:
+            return None  # Return None if no matching data found
+    except requests.RequestException as e:
+        print(f"Error fetching typeID for {item_name}: {e}")
+        return None  # Return None in case of an error
+
+# Read from input.txt
+with open(input_path, "r", encoding="utf-8") as f:
+    lines = f.readlines()
+
+# Prepare the data
+items = []
+for line in lines:
+    parts = line.strip().split('\t')
+    if len(parts) >= 2:
+        name = parts[0].strip()
+        amount = parts[1].strip()
+        typeID = get_typeID(name)  # Get typeID for the item
+        items.append((name, amount, typeID))  # Name = Column A, Amount = Column B, typeID = Column C
+
+# Write to eve_items_with_typeids.csv with semicolon delimiter
+with open(output_path, "w", newline='', encoding="utf-8") as f:
+    writer = csv.writer(f, delimiter=',')
+    writer.writerow(["Name", "Amount", "TypeID"])  # Added TypeID column
+    writer.writerows(items)
+
+print("eve_items_with_typeids.csv created")
+
 import requests
 import csv
 import time
@@ -19,11 +67,20 @@ total_sum = 0.0
 
 print("Reading input file...")
 with open(INPUT_CSV, newline='', encoding='utf-8') as infile:
-    reader = csv.DictReader(infile)
+    reader = csv.reader(infile)  # Use csv.reader to handle no headers
+    
+    # Skip the first row if it's the header
+    next(reader, None)  # Skips the header row
+    
     for row in reader:
-        item_name = row["Item Name"].strip()
-        quantity = int(row["Quantity"])
-        type_id = row["TypeID"]
+        # Access columns by index
+        item_name = row[0].strip()  # First column: Item Name
+        try:
+            quantity = int(row[1])  # Second column: Quantity
+        except ValueError:
+            print(f"Skipping {item_name}, invalid quantity: {row[1]}")
+            continue  # Skip this row if quantity is not a valid integer
+        type_id = row[2]  # Third column: TypeID
 
         if not type_id or type_id == '':
             print(f"Skipping {item_name}, missing TypeID")
@@ -106,10 +163,16 @@ summary_row = {
 print(f"\nWriting results to {OUTPUT_CSV}...")
 with open(OUTPUT_CSV, mode='w', newline='', encoding='utf-8') as outfile:
     fieldnames = ["Item Name", "Quantity", "TypeID", "Average Price (30d)", "Total Value (ISK)"]
-    writer = csv.DictWriter(outfile, fieldnames=fieldnames)
+    writer = csv.DictWriter(outfile, fieldnames=fieldnames, delimiter=';')
     writer.writeheader()
     for row in results:
+        # Ensure that price values are wrapped in quotes
+        row["Average Price (30d)"] = f'"{row["Average Price (30d)"]}"'
+        row["Total Value (ISK)"] = f'"{row["Total Value (ISK)"]}"'
         writer.writerow(row)
     writer.writerow(summary_row)
 
+
+
 print("Done!")
+input()

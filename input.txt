@@ -1,0 +1,21 @@
+Leshak Blueprint	2	0.01	0.00	0.00
+Rodiva Blueprint	4	0.01	0.00	0.00
+Vedmak Blueprint	2	0.01	0.00	0.00
+Kikimora Blueprint	2	0.01	0.00	0.00
+Entropic Radiation Sink I Blueprint	2	0.01	999900.00	0.00
+Baryon Exotic Plasma L Blueprint	3	0.01	0.00	0.00
+Baryon Exotic Plasma M Blueprint	3	0.01	0.00	0.00
+Baryon Exotic Plasma S Blueprint	5	0.01	0.00	0.00
+Meson Exotic Plasma L Blueprint	4	0.01	0.00	0.00
+Meson Exotic Plasma M Blueprint	1	0.01	0.00	0.00
+Meson Exotic Plasma S Blueprint	2	0.01	0.00	0.00
+Tetryon Exotic Plasma M Blueprint	3	0.01	0.00	0.00
+Tetryon Exotic Plasma S Blueprint	2	0.01	0.00	0.00
+Damavik Blueprint	1	0.01	0.00	0.00
+Glorified Decayed 10MN Afterburner Mutaplasmid Blueprint	1	0.10	0.00	0.00
+Glorified Decayed 1MN Afterburner Mutaplasmid Blueprint	2	0.10	0.00	0.00
+Glorified Decayed 500MN Microwarpdrive Mutaplasmid Blueprint	1	0.10	0.00	0.00
+Glorified Decayed 50MN Microwarpdrive Mutaplasmid Blueprint	1	0.10	0.00	0.00
+Glorified Decayed 5MN Microwarpdrive Mutaplasmid Blueprint	1	0.10	0.00	0.00
+Glorified Decayed Entropic Radiation Sink Mutaplasmid Blueprint	1	0.10	0.00	0.00
+
